@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Value Viewer</title>
+    <style>
+        .home-button {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        function goToHome() {
+            window.location.href = "/";
+        }
+    </script>
+</head>
+<body>
+    <h1>Value Viewer</h1>
+    <button class="home-button" onclick="goToHome()">Home</button>
+    <pre>{{ value }}</pre>
+</body>
+</html>
