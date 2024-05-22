@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Redis Monitor</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="static/style.css">
     <style>
         .sidebar {
-            position: fixed;
-            width: 200px;
+            /*position: fixed; */
+            width: 25%;
+            min-height: 800px;
             height: 100%;
             top: 0;
             left: 0;
             background-color: #f4f4f4;
             padding: 20px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            float: left;
         }
         .main-content {
-            margin-left: 220px;
-            padding: 20px;
+            /* margin-left: 220px; */
+            padding: 12px;
         }
         .folder {
             cursor: pointer;
@@ -25,6 +30,7 @@
         }
         .folder-content {
             margin-left: 20px;
+            font-size: 11pt;
             {% if all_open %}
             display: block;
             {% else %}
@@ -47,6 +53,8 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('value-viewer').textContent = data;
+                    document.getElementById('value-title').textContent = 'Value Viewer | '+key;
+                    document.getElementById('patternInput').value = key;
                 })
                 .catch(error => console.error('Error fetching data:', error));
         }
@@ -79,15 +87,31 @@
                 jsonData.style.display = "none";
             }
         }
+
+        // 폼 제출 전 검색어가 비어 있는지 확인
+        function validateForm() {
+            var patternValue = document.getElementById('patternInput').value.trim();
+            if (patternValue === '') {
+                // 검색어가 비어 있으면 action을 /로 변경하고 method를 GET으로 변경
+                document.getElementById('searchForm').action = '/';
+                document.getElementById('searchForm').method = 'get';
+            } else {
+                // 검색어가 비어 있지 않으면 원래대로 설정
+                document.getElementById('searchForm').action = '/search';
+                document.getElementById('searchForm').method = 'post';
+            }
+            return true; // 제출 허용
+        }
     </script>
 </head>
 <body>
     <div class="sidebar">
-        <h1>Redis Monitor</h1>
-        <form method="post" action="/search">
-            <input type="text" name="pattern" placeholder="Enter key pattern" value="{{ search_pattern }}">
+        <h2><a href="/">Redis Monitor</a></h2>
+        <form id="searchForm" method="post" action="/search" onsubmit="return validateForm()">
+            <input id="patternInput" type="text" name="pattern" placeholder="Enter key pattern" value="{{ search_pattern }}">
             <button type="submit">Search</button>
         </form>
+        <button class="toggle-all" onclick="toggleAll()">Toggle All</button>
         <div>
             {% for folder, items in grouped_keys.items() %}
                 <div class="folder" onclick="toggleFolder('folder-{{ loop.index }}')">
@@ -108,7 +132,7 @@
         </div>
     </div>
     <div class="main-content">
-        <h1>Value Viewer</h1>
+        <h2 pre id="value-title">Value Viewer</h2>
         <div>
             <pre id="value-viewer" style="white-space: pre-wrap;"></pre>
         </div>

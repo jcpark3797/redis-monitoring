@@ -39,13 +39,26 @@ def group_keys(keys):
             grouped[parts[0]].append((parts[1], r.get(key).decode('utf-8')))
         else:
             grouped[decoded_key].append(('', r.get(key).decode('utf-8')))
+    
+    # 그룹을 알파벳 순서대로 정렬
+    grouped = dict(sorted(grouped.items()))
+
+    # 각 하위 내용을 알파벳 순서대로 정렬
+    for key, value in grouped.items():
+        grouped[key] = sorted(value, key=lambda x: x[0])
+
     return grouped
+
+
+
+
 
 
 @app.post("/search")
 async def search(pattern: str = Form(...)):
     keys = r.keys(f'*{pattern}*')
     grouped_keys = group_keys(keys)
+
     for folder, items in grouped_keys.items():
         for i, (subkey, value) in enumerate(items):
             try:

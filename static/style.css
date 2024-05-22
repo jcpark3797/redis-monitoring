@@ -4,7 +4,7 @@ body {
     padding: 20px;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
 }
 
@@ -27,4 +27,24 @@ th, td {
 
 th {
     background-color: #f4f4f4;
+}
+
+ul {
+    margin-block-start: 0.2em;
+    padding-inline-start: 20px;
+}
+
+/* 스타일이 적용되지 않도록 설정 */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* 클릭 시 스타일이 변경되지 않도록 설정 */
+a:hover,
+a:active,
+a:focus {
+    text-decoration: none;
+    color: #007bff; /* 링크를 올렸을 때의 색상 */
+    outline: none;
 }
