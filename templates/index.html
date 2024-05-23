@@ -5,11 +5,14 @@
     <title>Redis Monitor</title>
     <link rel="stylesheet" href="static/style.css">
     <style>
+        .container {
+            display: flex;
+        }
         .sidebar {
             /*position: fixed; */
-            width: 25%;
+            /* width: 25%;
             min-height: 800px;
-            height: 100%;
+            height: 100%; */
             top: 0;
             left: 0;
             background-color: #f4f4f4;
@@ -18,10 +21,14 @@
             border: 1px solid #ccc;
             padding: 10px;
             float: left;
+            flex: 1;
+            height: auto !important;
         }
         .main-content {
             /* margin-left: 220px; */
             padding: 12px;
+            flex: 3;
+            height: auto !important;
         }
         .folder {
             cursor: pointer;
@@ -104,7 +111,7 @@
         }
     </script>
 </head>
-<body>
+<body class="container">
     <div class="sidebar">
         <h2><a href="/">Redis Monitor</a></h2>
         <form id="searchForm" method="post" action="/search" onsubmit="return validateForm()">
